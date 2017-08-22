@@ -10,7 +10,7 @@ module FastlyRails
     # custom config example:
     #  {cache_control: 'public, no-cache, maxage=xyz', surrogate_control: 'max-age: blah'}
     def set_cache_control_headers(max_age = FastlyRails.configuration.max_age, opts = {})
-      request.session_options[:skip] = true    # no cookies
+      request.session_options[:skip] = true if flash.empty?   # no cookies unless there is a flash message
       response.headers['Cache-Control'] = opts[:cache_control] || "public, no-cache"
       response.headers['Surrogate-Control'] = opts[:surrogate_control] || build_surrogate_control(max_age, opts)
     end
